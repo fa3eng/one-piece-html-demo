@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #canvas {
+            display: block;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <canvas id="canvas"></canvas>
+
+</body>
+
+<script>
+    // 获取canvas
+    let canvas = document.querySelector('canvas');
+    // 设置渲染上下文
+    let ctx = canvas.getContext('2d');
+    // client客户端
+    canvas.width = document.documentElement.clientWidth;
+    canvas.height = document.documentElement.clientHeight;
+
+
+    
+    /**
+     * 令(x1, x2)作为起始坐标,(x2, y2)作为终止目标画一条直线
+     * @date 2020-12-02
+     * @param {any} x1
+     * @param {any} y1
+     * @param {any} x2
+     * @param {any} y2
+     * @returns {any}
+     */
+    function drawLine(x1, y1, x2, y2) {
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+        ctx.lineWidth = 10;
+        ctx.lineCap = 'round';
+        
+    }
+
+    // 创建一个数组,存最后一次的坐标
+    let last = new Array();
+    last = [0, 0];
+    // 标记鼠标是否按下
+    let flag = false;
+    // 判断是否为触屏
+    let isTouchDevice = "ontouchstart" in document.documentElement;
+    if(isTouchDevice){
+        // 是触屏设备
+        
+        // 开始触摸
+        canvas.ontouchstart = (e) =>{
+
+            let x = e.touches[0].clientX;
+            let y = e.touches[0].clientY;
+
+            last = [x, y];
+        }
+
+        // 移动
+        canvas.ontouchmove = (e) => {
+
+            let x = e.touches[0].clientX;
+            let y = e.touches[0].clientY;
+
+            // 画出直线
+            drawLine(last[0], last[1], x, y);
+
+            // 更新坐标
+            last[0] = x;
+            last[1] = y;
+        }
+
+
+    } else {
+        // 不是触屏设备
+        canvas.onmousedown = (e) => {
+            flag = true;
+            let x = e.clientX;
+            let y = e.clientY;
+
+            last = [x, y];
+        }
+
+        canvas.onmouseup = (e) => {
+            flag = false;
+        }
+        
+        canvas.onmousemove = (e) => {
+            // 如果鼠标被按下
+            if(flag){
+                let x = e.clientX;
+                let y = e.clientY;
+
+                drawLine(last[0], last[1], x, y);
+
+                // 更新坐标
+                last[0] = x;
+                last[1] = y;
+            }
+        }
+
+
+    }
+
+
+
+</script>
+
+</html>
