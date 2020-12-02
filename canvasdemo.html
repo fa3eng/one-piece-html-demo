@@ -37,11 +37,11 @@
     // 设置渲染上下文
     let ctx = canvas.getContext('2d');
     // client客户端
+    // canvas.width = document.documentElement.clientWidth;
+    // canvas.height = document.documentElement.clientHeight;
     canvas.width = document.documentElement.clientWidth;
-    canvas.height = document.documentElement.clientHeight;
+    canvas.height = document.documentElement.clientHeight
 
-
-    
     /**
      * 令(x1, x2)作为起始坐标,(x2, y2)作为终止目标画一条直线
      * @date 2020-12-02
@@ -56,9 +56,8 @@
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
         ctx.stroke();
-        ctx.lineWidth = 10;
         ctx.lineCap = 'round';
-        
+        ctx.lineWidth = 10;
     }
 
     // 创建一个数组,存最后一次的坐标
@@ -68,16 +67,16 @@
     let flag = false;
     // 判断是否为触屏
     let isTouchDevice = "ontouchstart" in document.documentElement;
-    if(isTouchDevice){
+    if (isTouchDevice) {
         // 是触屏设备
         
         // 开始触摸
-        canvas.ontouchstart = (e) =>{
-
+        canvas.ontouchstart = (e) => {
             let x = e.touches[0].clientX;
             let y = e.touches[0].clientY;
 
             last = [x, y];
+            drawLine(x, y, x, y);
         }
 
         // 移动
@@ -108,10 +107,10 @@
         canvas.onmouseup = (e) => {
             flag = false;
         }
-        
+
         canvas.onmousemove = (e) => {
             // 如果鼠标被按下
-            if(flag){
+            if (flag) {
                 let x = e.clientX;
                 let y = e.clientY;
 
